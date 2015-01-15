@@ -65,27 +65,28 @@
     var y = this.origin.y + (this.height/2);
     for(var i=0; i<textFields.length; i++) {
       context.fillText(textFields[i], x, y);
-      y += 20;
+      y += 20;   // arbitrary.... should be a constant or let user decide.. or automatic based on box height and font-size
     };
   };
 
   Arrow.prototype.drawArrow = function(context, wingLength) {
+    var wingAngle = Math.PI/8;    // could implement as a constant or a user-defined var
     drawLine(context, this.startPoint, this.endPoint);
     var x = this.endPoint.x - this.startPoint.x;
     var y = this.endPoint.y - this.startPoint.y;
     var theta = Math.atan(x/y);
     if (y<0) theta += Math.PI;
-    var phi = theta + 3*Math.PI/4;
+    var phi = theta + (Math.PI - wingAngle);
     var dy = wingLength * Math.cos(phi);
     var dx = wingLength * Math.sin(phi);
-    var point = new Point(this.endPoint.x + dx, this.endPoint.y + dy);
-    drawLine(context, this.endPoint, point);
-    phi = theta - 3*Math.PI/4;
+    var newEndPoint = new Point(this.endPoint.x + dx, this.endPoint.y + dy);
+    drawLine(context, this.endPoint, newEndPoint);
+    phi = theta - (Math.PI - wingAngle);
     dy = wingLength * Math.cos(phi);
     dx = wingLength * Math.sin(phi);
-    point.x = this.endPoint.x + dx;
-    point.y = this.endPoint.y + dy;
-    drawLine(context, this.endPoint, point);
+    newEndPoint.x = this.endPoint.x + dx;
+    newEndPoint.y = this.endPoint.y + dy;
+    drawLine(context, this.endPoint, newEndPoint);
   };
 
   UMBDiagram.prototype.addBox = function(originX, originY, width, height, className, propertyNames) {
@@ -97,11 +98,11 @@
     this.boxes.push(box);
   }
 
-  UMBDiagram.prototype.addArrow = function(startX, startY, endX, endY) {
+  UMBDiagram.prototype.addArrow = function(startX, startY, endX, endY, wingLength) {
     var startPoint = new Point(startX, startY);
     var endPoint = new Point(endX, endY);
     var arrow = new Arrow(startPoint, endPoint);
-    arrow.drawArrow(this.context, 15);
+    arrow.drawArrow(this.context, wingLength);
     this.arrows.push(arrow);
   }
 
@@ -109,12 +110,12 @@
   //example function calls to demonstrate object model of this program
   var diagram = new UMBDiagram();
   diagram.addBox(50, 30, 200, 300, "UMBDiagram", ["Canvas Draw Context", "Array of Boxes", "Array of Arrows"]);
-  diagram.addArrow(255, 150, 325, 100);
-  diagram.addArrow(255, 185, 330, 300);
+  diagram.addArrow(255, 150, 325, 100, 20);
+  diagram.addArrow(255, 185, 330, 300, 20);
   diagram.addBox(340, 10, 200, 150, "Box", ["Origin", "Height", "Width"]);
   diagram.addBox(340, 200, 200, 150, "Arrow", ["Starting Point", "End Point"]);
-  diagram.addArrow(550, 80, 640, 150);
-  diagram.addArrow(550, 325, 640, 210);
+  diagram.addArrow(550, 80, 640, 150, 20);
+  diagram.addArrow(550, 325, 640, 210, 20);
   diagram.addBox(650, 100, 150, 150, "Point", ["X coordinate", "Y coordinate"]);
 
 </script>
