@@ -4,10 +4,6 @@
 </hmtl>
 
 <script>
-  /*function Line(startPoint, endPoint) {
-    this.startPoint = startPoint;
-    this.endPoint = endPoint;
-  };*/
 
   function Point(x, y) {
     this.x = x;
@@ -76,22 +72,16 @@
     drawLine(this.startPoint, this.endPoint);
     var x = this.endPoint.x - this.startPoint.x;
     var y = this.endPoint.y - this.startPoint.y;
-    console.log("x, y:", x, y);
     var theta = Math.atan(x/y);
-    console.log("theta", theta);
-    var phi = Math.PI/4 - theta;
-    console.log("phi", phi);
-    var dy = -wingLength * Math.cos(phi);
-    var dx = -wingLength * Math.sin(phi);
-    console.log("draw arrow:",dx, dy);
+    if (y<0) theta += Math.PI;
+    var phi = theta + 3*Math.PI/4;
+    var dy = wingLength * Math.cos(phi);
+    var dx = wingLength * Math.sin(phi);
     var point = new Point(this.endPoint.x + dx, this.endPoint.y + dy);
     drawLine(this.endPoint, point);
-    phi += Math.PI/2;
-    console.log("phi, 2nd time:", phi);
-    dy = -wingLength * Math.cos(phi);
-    dx = -wingLength * Math.sin(phi);
-    console.log("draw arrow again",dx, dy);
-
+    phi = theta - 3*Math.PI/4;
+    dy = wingLength * Math.cos(phi);
+    dx = wingLength * Math.sin(phi);
     point.x = this.endPoint.x + dx;
     point.y = this.endPoint.y + dy;
     drawLine(this.endPoint, point);
@@ -103,8 +93,8 @@
   box.drawBox();
   box.enterObjectNameField("Yo mama");
   box.enterPropertyFields(["number1", "number 2", "third property", "etc..."]);*/
-  var sPoint = new Point(100, 100);
-  var ePoint = new Point(300, 200);
+  var sPoint = new Point(30, 90);
+  var ePoint = new Point(110, 170);
   var arrow = new Arrow(sPoint, ePoint);
   arrow.drawArrow(30);
 
