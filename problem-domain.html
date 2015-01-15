@@ -1,0 +1,122 @@
+<!DOCTYPE>
+<html>
+  <canvas id="myCanvas" width=1000 height=700> </canvas>
+</hmtl>
+
+<script>
+// several lines of code relating to using canvas and the context variable were adapted from
+// http://www.w3schools.com/html/html5_canvas.asp
+
+  function Point(x, y) {
+    this.x = x;
+    this.y = y;
+  };
+
+  function Box(origin, width, height) {
+    this.origin = origin;
+    this.height = height;
+    this.width = width;
+  };
+
+  function Arrow(startPoint, endPoint) {
+    this.startPoint = startPoint;
+    this.endPoint = endPoint;
+  };
+
+  function UMBDiagram() {
+    var el = document.getElementById("myCanvas");
+    this.context = el.getContext("2d");
+    this.boxes = [];
+    this.arrows = [];
+  }
+
+  drawLine = function(context, startPoint, endPoint) {
+    context.moveTo(startPoint.x,startPoint.y);
+    context.lineTo(endPoint.x,endPoint.y);
+    context.stroke();
+  };
+
+  Box.prototype.drawBox = function(context) {
+    var point1 = new Point(this.origin.x, this.origin.y);
+    var point2 = new Point(this.origin.x + this.width, this.origin.y);
+    drawLine(context, point1, point2);
+    point1.x += this.width;
+    point1.y += this.height;
+    drawLine(context, point2, point1);
+    point2.x = this.origin.x;
+    point2.y += this.height;
+    drawLine(context, point1, point2);
+    point1 = this.origin;
+    drawLine(context, point2, point1);
+  };
+
+  Box.prototype.enterObjectNameField = function(context, text) {
+    var x = this.origin.x + (this.width/2);
+    var y = this.origin.y + (this.height/4);
+    context.textAlign = "center";
+    context.font = "22px Arial";
+    context.fillText(text, x, y);
+  };
+
+  Box.prototype.enterPropertyFields = function(context, textFields) {
+    context.textAlign = "center";
+    context.font = "16px Arial";
+    var x = this.origin.x + (this.width/2);
+    var y = this.origin.y + (this.height/2);
+    for(var i=0; i<textFields.length; i++) {
+      context.fillText(textFields[i], x, y);
+      y += 20;   // arbitrary.... should be a constant or let user decide.. or automatic based on box height and font-size
+    };
+  };
+
+  Arrow.prototype.drawArrow = function(context, wingLength) {
+    var wingAngle = Math.PI/8;    // could implement as a constant or a user-defined var
+    drawLine(context, this.startPoint, this.endPoint);
+    var x = this.endPoint.x - this.startPoint.x;
+    var y = this.endPoint.y - this.startPoint.y;
+    var theta = Math.atan(x/y);
+    if (y<0) theta += Math.PI;
+    var phi = theta + (Math.PI - wingAngle);
+    var dy = wingLength * Math.cos(phi);
+    var dx = wingLength * Math.sin(phi);
+    var newEndPoint = new Point(this.endPoint.x + dx, this.endPoint.y + dy);
+    drawLine(context, this.endPoint, newEndPoint);
+    phi = theta - (Math.PI - wingAngle);
+    dy = wingLength * Math.cos(phi);
+    dx = wingLength * Math.sin(phi);
+    newEndPoint.x = this.endPoint.x + dx;
+    newEndPoint.y = this.endPoint.y + dy;
+    drawLine(context, this.endPoint, newEndPoint);
+  };
+
+  UMBDiagram.prototype.addBox = function(originX, originY, width, height, className, propertyNames) {
+    var origin = new Point(originX, originY);
+    var box = new Box(origin, width, height);
+    box.drawBox(this.context);
+    box.enterObjectNameField(this.context, className);
+    box.enterPropertyFields(this.context, propertyNames);
+    this.boxes.push(box);
+  }
+
+  UMBDiagram.prototype.addArrow = function(startX, startY, endX, endY, wingLength) {
+    var startPoint = new Point(startX, startY);
+    var endPoint = new Point(endX, endY);
+    var arrow = new Arrow(startPoint, endPoint);
+    arrow.drawArrow(this.context, wingLength);
+    this.arrows.push(arrow);
+  }
+
+
+  //example function calls to demonstrate object model of this program
+  var diagram = new UMBDiagram();
+  diagram.addBox(50, 30, 200, 300, "UMBDiagram", ["Canvas Draw Context", "Array of Boxes", "Array of Arrows"]);
+  diagram.addArrow(255, 150, 325, 100, 20);
+  diagram.addArrow(255, 185, 330, 300, 20);
+  diagram.addBox(340, 10, 200, 150, "Box", ["Origin", "Height", "Width"]);
+  diagram.addBox(340, 200, 200, 150, "Arrow", ["Starting Point", "End Point"]);
+  diagram.addArrow(550, 80, 640, 150, 20);
+  diagram.addArrow(550, 325, 640, 210, 20);
+  diagram.addBox(650, 100, 150, 150, "Point", ["X coordinate", "Y coordinate"]);
+
+</script>
+
