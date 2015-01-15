@@ -1,0 +1,141 @@
+<!DOCTYPE>
+<html>
+  <canvas id="myCanvas" width=1000 height=700> </canvas>
+</hmtl>
+
+<script>
+  /*function Line(startPoint, endPoint) {
+    this.startPoint = startPoint;
+    this.endPoint = endPoint;
+  };*/
+
+  function Point(x, y) {
+    this.x = x;
+    this.y = y;
+  };
+
+  function Box(origin, width, height) {
+    this.origin = origin;
+    this.height = height;
+    this.width = width;
+  };
+
+  function Arrow(startPoint, endPoint) {
+    this.startPoint = startPoint;
+    this.endPoint = endPoint;
+  };
+
+  drawLine = function(startPoint, endPoint) {
+    // mostly copied from http://www.w3schools.com/html/html5_canvas.asp
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    ctx.moveTo(startPoint.x,startPoint.y);
+    ctx.lineTo(endPoint.x,endPoint.y);
+    ctx.stroke();
+    // end plagiarism
+  };
+
+  Box.prototype.drawBox = function() {
+    var point1 = new Point(this.origin.x, this.origin.y);
+    var point2 = new Point(this.origin.x + this.width, this.origin.y);
+    drawLine(point1, point2);
+    point1.x += this.width;
+    point1.y += this.height;
+    drawLine(point2, point1);
+    point2.x = this.origin.x;
+    point2.y += this.height;
+    drawLine(point1, point2);
+    point1 = origin;
+    drawLine(point2, point1);
+  };
+
+  Box.prototype.enterObjectNameField = function(text) {
+    var c = document.getElementById("myCanvas");
+    var context = c.getContext("2d");
+    var x = this.origin.x + (this.width/2);
+    var y = this.origin.y + (this.height/4);
+    context.textAlign = "center";
+    context.font = "22px Arial";
+    context.fillText(text, x, y);
+  };
+
+  Box.prototype.enterPropertyFields = function(textFields) {
+    var c = document.getElementById("myCanvas");
+    var context = c.getContext("2d");
+    context.textAlign = "center";
+    context.font = "16px Arial";
+    var x = this.origin.x + (this.width/2);
+    var y = this.origin.y + (this.height/2);
+    for(var i=0; i<textFields.length; i++) {
+      context.fillText(textFields[i], x, y);
+      y += 20;
+    };
+  };
+
+  Arrow.prototype.drawArrow = function(wingLength) {
+    drawLine(this.startPoint, this.endPoint);
+    var x = this.endPoint.x - this.startPoint.x;
+    var y = this.endPoint.y - this.startPoint.y;
+    console.log("x, y:", x, y);
+    var theta = Math.atan(x/y);
+    console.log("theta", theta);
+    var phi = Math.PI/4 - theta;
+    console.log("phi", phi);
+    var dy = -wingLength * Math.cos(phi);
+    var dx = -wingLength * Math.sin(phi);
+    console.log("draw arrow:",dx, dy);
+    var point = new Point(this.endPoint.x + dx, this.endPoint.y + dy);
+    drawLine(this.endPoint, point);
+    phi += Math.PI/2;
+    console.log("phi, 2nd time:", phi);
+    dy = -wingLength * Math.cos(phi);
+    dx = -wingLength * Math.sin(phi);
+    console.log("draw arrow again",dx, dy);
+
+    point.x = this.endPoint.x + dx;
+    point.y = this.endPoint.y + dy;
+    drawLine(this.endPoint, point);
+  };
+
+
+  /*var origin = new Point(11, 11);
+  var box = new Box(origin, 200, 300);
+  box.drawBox();
+  box.enterObjectNameField("Yo mama");
+  box.enterPropertyFields(["number1", "number 2", "third property", "etc..."]);*/
+  var sPoint = new Point(100, 100);
+  var ePoint = new Point(300, 200);
+  var arrow = new Arrow(sPoint, ePoint);
+  arrow.drawArrow(30);
+
+  /*function isValidPoint(endPoints) {  //returns true if point is a valid array containg a number in first 2 indices
+    if(endPoints.length >= 2) {
+      var isValid = true;
+      for(var i=0; i<2; i++) {
+        if (typeof endPoints[i] !== 'number') {
+          isValid = false;
+          console.log("Error. BEEP BEEP BOOP. Passing invalid array as coordinate point");
+        }
+      }
+      return isValid;
+    }
+    else  {
+      console.log("Error. BEEP BOOP BOOP. Passing invalid array as coordinate point");
+      return false;
+    }
+  }
+
+  drawLine = function(endPoints) {
+    if(isValidPoint(endPoints.startPoint) && isValidPoint(endPoints.endPoint)) {
+      // mostly copied from http://www.w3schools.com/html/html5_canvas.asp
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+      ctx.moveTo(endPoints.startPoint[0],endPoints.startPoint[1]);
+      ctx.lineTo(endPoints.endPoint[0],endPoints.endPoint[1]);
+      ctx.stroke();
+      // end plagiarism
+    }
+  };
+*/
+</script>
+
