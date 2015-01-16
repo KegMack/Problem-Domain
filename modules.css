@@ -1,0 +1,10 @@
+.main-font-style {
+  font-family: 'Hammersmith One', sans-serif;
+  font-size: 24;
+  font-color: black;
+}
+
+.large-button {
+  background-color: yellow;
+  height:25px;
+}

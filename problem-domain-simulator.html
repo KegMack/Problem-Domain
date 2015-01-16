@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <title>Let's make a UML Diagram!   yay</title>
+    <link href="960_12_col.css" type="text/css" rel="stylesheet" />
+    <link href="base.css" type="text/css" rel="stylesheet" />
+    <link href="layout.css" type="text/css" rel="stylesheet" />
+    <link href="modules.css" type="text/css" rel="stylesheet" />
+  </head>
+  <header>
+    <section class="input-section">
+      <label class="input-label"> Box Stuff </label>
+      <input class="grid1" id="boxOriginX" placeholder="Origin X coord" />
+      <input class="grid3" id="boxOriginY" placeholder="Origin Y coord" />
+      <input class="grid5" id="boxWidth" placeholder="Width" />
+      <input class="grid7" id="boxHeight" placeholder="Height" />
+      <input class="grid9" id="className" placeholder="Class Name" />
+      <input class="grid11" id="propertyName" placeholder="Property Name" />
+      <button class="grid1" id="addProperty"> Add a Property </button>
+      <button class="grid11 large-button" id="createBox"> Create Box! </button>
+    </section>
+    <section class="input-section">
+      <label class="input-label"> Arrow Stuff </label>
+      <input id="arrowStartX" placeholder="Starting X coord" />
+      <input id="arrowStartY" placeholder="Starting Y coord" />
+      <input id="arrowEndX" placeholder="Ending X coord" />
+      <input id="arrowEndY" placeholder="Ending Y coord" />
+      <input id="arrowSize" placeholder="Size of Arrow" />
+      <button class="grid11 large-button" id="createArrow"> Create Arrow! </button>
+    </section>
+  </header>
+  <body>
+   <!-- <a href="problem-domain.html">Back to home page</a> -->
+    <canvas id="myCanvas" width=1000 height=700> </canvas>
+    <script src="problem-domain.js"></script>
+
+  </body>
+</hmtl>
