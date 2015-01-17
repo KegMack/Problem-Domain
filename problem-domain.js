@@ -64,7 +64,7 @@
     var y = this.origin.y + (this.height/2);
     for(var i=0; i<textFields.length; i++) {
       context.fillText(textFields[i], x, y);
-      y += 20;   // arbitrary.... should be a constant or let user decide.. or automatic based on box height and font-size
+      y += 20;   // arbitrary.... could be a constant or let user decide.. or automatic based on box height and font-size
     };
   };
 
@@ -144,23 +144,36 @@
     console.log(diagram.arrows[0]);
   };
 
+  function displayDemo() {
+    var diagram = new UMLDiagram();
+    diagram.addBox(50, 30, 200, 300, "UMLDiagram", ["Canvas Draw Context", "Array of Boxes", "Array of Arrows"]);
+    diagram.addArrow(255, 150, 325, 100, 20);
+    diagram.addArrow(255, 185, 330, 300, 20);
+    diagram.addBox(340, 10, 200, 150, "Box", ["Origin", "Height", "Width"]);
+    diagram.addBox(340, 200, 200, 150, "Arrow", ["Starting Point", "End Point"]);
+    diagram.addArrow(550, 80, 640, 150, 20);
+    diagram.addArrow(550, 325, 640, 210, 20);
+    diagram.addBox(650, 100, 150, 150, "Point", ["X coordinate", "Y coordinate"]);
+  };
+
+  function clearCanvas() {
+    var el = document.getElementById("myCanvas");
+    diagram.context.clearRect(0, 0, el.width, el.height);
+  };
+
+  function clearPage() {
+    clearCanvas();
+    diagram.boxes = [];
+    diagram.arrows = [];
+  };
+
   var propertiesButtonElement = document.getElementById('addProperty');
   var boxButtonElement = document.getElementById('createBox');
   var arrowButtonElement = document.getElementById('createArrow');
-
+  var demoButtonElement = document.getElementById('demo');
+  var clearButtonElement = document.getElementById('clearCanvas');
   propertiesButtonElement.addEventListener('click', addPropertyButtonClicked);
   boxButtonElement.addEventListener('click', createBoxButtonClicked);
   arrowButtonElement.addEventListener('click', createArrowButtonClicked);
-
-  //example function calls to demonstrate object model of this program
-  /*var diagram = new UMLDiagram();
-  diagram.addBox(50, 30, 200, 300, "UMLDiagram", ["Canvas Draw Context", "Array of Boxes", "Array of Arrows"]);
-  diagram.addArrow(255, 150, 325, 100, 20);
-  diagram.addArrow(255, 185, 330, 300, 20);
-  diagram.addBox(340, 10, 200, 150, "Box", ["Origin", "Height", "Width"]);
-  diagram.addBox(340, 200, 200, 150, "Arrow", ["Starting Point", "End Point"]);
-  diagram.addArrow(550, 80, 640, 150, 20);
-  diagram.addArrow(550, 325, 640, 210, 20);
-  diagram.addBox(650, 100, 150, 150, "Point", ["X coordinate", "Y coordinate"]);
-*/
-
+  demoButtonElement.addEventListener('click', displayDemo);
+  clearButtonElement.addEventListener('click', clearPage);

@@ -4,7 +4,40 @@
   font-color: black;
 }
 
+.page-focus > h1 {
+  font-size: 40;
+}
+
 .large-button {
   background-color: yellow;
   height:25px;
+}
+
+.large-centered {
+  text-align: center;
+  font-size: 40;
+}
+
+.about_body {
+  font-size: 25;
+}
+
+.about_body section {
+  margin:20 0;
+}
+
+strong {
+  font-weight: bold;
+  color: brown;
+}
+
+.medium-sized-image {
+  height: 300;
+  width: 300;
+  margin: 5 15;
+}
+
+.nav-footer {
+  height: 50;
+  font-size: 30;
 }
