@@ -130,7 +130,6 @@
                    document.getElementById("className").value,
                    properties);
     clearInputs(["boxOriginY", "boxOriginX", "boxWidth", "boxHeight", "className"]);
-    console.log(diagram.boxes[0]);
     properties = [];
   };
 
@@ -141,11 +140,9 @@
                      Number(document.getElementById("arrowEndY").value),
                      Number(document.getElementById("arrowSize").value));
     clearInputs(["arrowStartX","arrowStartY","arrowEndX","arrowEndY","arrowSize"]);
-    console.log(diagram.arrows[0]);
   };
 
   function displayDemo() {
-    var diagram = new UMLDiagram();
     diagram.addBox(50, 30, 200, 300, "UMLDiagram", ["Canvas Draw Context", "Array of Boxes", "Array of Arrows"]);
     diagram.addArrow(255, 150, 325, 100, 20);
     diagram.addArrow(255, 185, 330, 300, 20);
@@ -158,13 +155,22 @@
 
   function clearCanvas() {
     var el = document.getElementById("myCanvas");
+    var w = el.width;
+    el.width = 1;
+    el.width = w;
     diagram.context.clearRect(0, 0, el.width, el.height);
   };
 
+  function clearArray(array) {
+    while(array.length>0)
+      array.pop();
+  }
+
   function clearPage() {
+    clearArray(diagram.boxes);
+    clearArray(diagram.arrows);
     clearCanvas();
-    diagram.boxes = [];
-    diagram.arrows = [];
+    console.log(diagram);
   };
 
   var propertiesButtonElement = document.getElementById('addProperty');
